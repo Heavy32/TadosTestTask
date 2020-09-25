@@ -1,0 +1,39 @@
+CREATE DATABASE TadosTestTaskSQL;
+
+USE TadosTestTaskSQL
+
+CREATE TABLE Users(
+	User_Id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	  Login VARCHAR(255),
+	   City VARCHAR(255),
+);
+
+
+CREATE TABLE Content_Types(
+	Content_Type_Id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+			   Name VARCHAR(50)
+)
+
+CREATE TABLE Content(
+	     Content_Id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	           Name NVARCHAR(255),
+	   Article_Text TEXT,
+	      Video_URL VARCHAR(255),
+      Gallery_Cover VARCHAR(200), 
+	Content_Type_Id INT NOT NULL FOREIGN KEY REFERENCES Content_Types,
+		  Author_Id INT NOT NULL FOREIGN KEY REFERENCES Users
+);
+
+CREATE TABLE Photos_URL(
+	Photos_URL_Id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+			  URL VARCHAR(255),
+		 Video_Id INT NOT NULL FOREIGN KEY REFERENCES Content
+);
+
+CREATE TABLE Content_Rating(
+	   User_Id INT NOT NULL FOREIGN KEY REFERENCES Users,
+	Content_Id INT NOT NULL FOREIGN KEY REFERENCES Content,
+	    Rating FLOAT CHECK (Rating BETWEEN 1 AND 5) DEFAULT '0',
+
+	CONSTRAINT PK_Content_Rating PRIMARY KEY (User_Id, Content_Id)
+);
